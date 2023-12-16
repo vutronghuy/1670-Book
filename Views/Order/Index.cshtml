@@ -1,0 +1,90 @@
+﻿@using System.Security.Claims
+
+@model ICollection<Order>
+
+@{
+    ViewData["Title"] = "Index";
+    ClaimsPrincipal currentUser = this.User;
+    var currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+    
+
+}
+
+<div class="container text-center mt-3">
+    @if (@TempData["Message"] != null)
+    {
+            <p class="alert alert-danger">@TempData["Message"]</p>
+    }
+
+
+  <table class="table table-bordered mt-3">
+        <tr>
+        <th colspan="6" class="h3 bg-light text-success">
+    Orders List: @(User.IsInRole("Admin") ? Model.Count : Model.Count(o => o.UserId == currentUserId))
+</th>
+      </tr
+    <tr>
+            <th>Orders Id</th>
+      <th>Order Time</th>
+      <th>User</th>
+            @* <th>BookName</th>*@
+      <th>Total</th>
+
+      <th>Action</th>
+            
+    </tr>
+
+        @foreach (var order in Model.OrderByDescending(o => o.OrderTime))
+        {
+
+            if ((User.Identity.IsAuthenticated) && (string)order.UserId == currentUserId)
+            {
+
+                        <tr>
+                            <td>@order.Id</td>
+                          <td>@order.OrderTime.ToString("dd-MM-yyyy HH:mm")</td>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        if (user.Id == order.UserId)
+                        {
+                                              <td>@user.Email</td>
+                        }
+                    }
+                    @* <td>@order.Book.NameBook</td>*@
+
+                                           <td>@order.Total.ToString("C")</td>
+                          <td>                      
+                             <a class="btn btn-danger" asp-controller="Order">
+                                      completly payment
+                            </a>
+                          </td>
+                        </tr>
+            }
+             
+            else if ((User.Identity.IsAuthenticated) && (User.IsInRole("Admin")))
+            {
+                        <tr>
+                            <td>@order.Id</td>
+                          <td>@order.OrderTime.ToString("dd-MM-yyyy HH:mm")</td>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        if (user.Id == order.UserId)
+                        {
+                                              <td>@user.Email</td>
+                        }
+                    }
+                                    <td>@order.Total.ToString("C")</td>
+
+                          <td>                       
+                            <a class="btn btn-danger" asp-controller="Order" asp-action="Delete" asp-route-id="@order.Id"
+                               onclick="return confirm('Are you sure to delete this order?');">
+                              Delete
+                            </a>
+                          </td>
+                        </tr>
+            }
+        }
+  </table>
+</div>
+
+

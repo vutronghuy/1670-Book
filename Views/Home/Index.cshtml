@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<section class="home" id="home">
+
+<div class ="row">
+
+    <div class ="content">
+        <h1>upto 60% off</h1>
+        <p>The Art of Homepage Design" is a comprehensive guide 
+            that delves into the intricacies of creating captivating and effective
+            homepages for websites. Authored by leading experts in web design, 
+             </p>
+           <a class="btn" asp-controller="AdminBook" asp-action="Index">Shop Now</a>  
+    </div>
+
+    <div class =" books-slider">
+        <div class="wrapper">
+     <a > <img src="~/image/anh1.jpg"/></a>
+     <a > <img src="~/image/anh2.jpg"/></a> 
+     <a > <img src="~/image/anh3.jpg"/></a> 
+     <a ><img src="~/image/anh4.jpg"/></a> 
+     <a > <img src="~/image/anh5.jpg"/></a> 
+     <a > <img src="~/image/anh6.jpg"/></a> 
+        </div>
+         <img src="~/image/anh11.png.png" class="stand">
+    </div>
+</div>
+</section>
+
+<style>
+    .section{
+        padding:3rem 2rem;
+    }
+.home {
+    background: url('@Url.Content("~/images/anh10.jpg")') no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.home .row{
+    display : flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:1.5rem;
+
+}
+.home .row .content{
+    flex:1 1 42rem;
+
+}
+.home .row .content h1{
+    font-size: 4.5rem;
+    color:var(--black);
+}
+.home .row .content p{
+    font-size: 1.5rem;
+    color:var(--light-color);
+    line-height: 2;
+    padding:1rem 0;
+
+}
+.home .row .books-slider{
+    flex:1 1 42rem;
+    text-align: center;
+    margin-top: 2rem;
+
+
+}
+.home .row .books-slider a img{
+    height: 15rem;
+
+}
+.home .row .books-slider a:hover img{
+    transform: scale(.9)
+}
+.home .row .books-slider .stand{
+    width:100%;
+    margin-top: -1rem;
+}
+
+</style>

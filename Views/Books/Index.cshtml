@@ -1,0 +1,47 @@
+﻿@model IEnumerable<_1670_Book.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    var properties = new List<string> { "NameBook", "Author", "Category", "Quantity", "Price", "Image", "Choice" };
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+            @foreach (var book in properties)
+            {
+                    <td>
+                    @book
+                    </td>
+            }
+    </tr>
+  </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+                  <tr>    
+
+                    <td>@book.NameBook </td>   
+                     <td>@book.Author</td>
+                    <td>@book.Category.Name</td>          
+                    <td>@book.Quantity</td>
+                    <td>@book.Price</td>
+                          <td>
+                                 <img src="~/image/@book.BookUrl" alt="Image" class="rounded-cycle" width="100" height="100" />
+                             </td>
+
+                    <td>
+                      <a asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+                      <a asp-action="Details" asp-route-id="@book.Id">Details</a>
+                      <a asp-action="Delete" asp-route-id="@book.Id" 
+                         onclick="return confirm('Are you sure to delete this order?');">Delete</a>
+                    </td>
+                  </tr>
+        }  
+        </tbody>
+</table>

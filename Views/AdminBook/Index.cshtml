@@ -1,0 +1,42 @@
+﻿@model IEnumerable<_1670_Book.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    var properties = new List<string> { "NameBook", "Author", "Category", "Quantity", "Price", "Image", " Choice", " " };
+}
+
+<table class="table">
+  <thead>
+    <tr>
+            @foreach (var book in properties)
+            {
+                    <td>
+                    @book
+                    </td>
+            }
+    </tr>
+  </thead>
+
+  <tbody>
+        @foreach (var book in Model)
+        {
+                  <tr>
+                    <td>@book.NameBook </td>
+                    <td>@book.Author</td>
+                    <td>@book.Category.Name</td>
+                    <td>@book.Quantity</td>
+                    <td>@book.Price</td>
+                    <td>
+                              <img src="~/image/@book.BookUrl" alt="Image" class="rounded-cycle"  width="120" height="150" />
+                    </td>
+
+                    <td>
+                      <a asp-controller="AdminBook" asp-action="Details" asp-route-id="@book.Id">Details</a>
+                    </td>
+                    <td>
+                          <a asp-controller="AdminBook" asp-action="AddToCart" asp-route-id="@book.Id">Add to cart</a>
+                    </td>
+                  </tr>
+        }
+  </tbody>
+</table>
