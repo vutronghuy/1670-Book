@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    var properties = new List<string> { "NameBook", "Author", "Category", "Quantity", "Price", "Image", " Choice", " " };
+    var properties = new List<string> { "NameBook", "Author", "Category", "Quantity", "Price", "Image", " Choice", " "  };
 }
 
 <table class="table">
@@ -27,14 +27,14 @@
                     <td>@book.Quantity</td>
                     <td>@book.Price</td>
                     <td>
-                              <img src="~/image/@book.BookUrl" alt="Image" class="rounded-cycle"  width="120" height="150" />
+                         <img src="~/image/@book.BookUrl" alt="Image" class="rounded-cycle"  width="120" height="150" />
                     </td>
 
                     <td>
-                      <a asp-controller="AdminBook" asp-action="Details" asp-route-id="@book.Id">Details</a>
+                          <a asp-controller="AdminBook" asp-action="Details" class="btn btn-success" asp-route-id="@book.Id">Details</a>
                     </td>
                     <td>
-                          <a asp-controller="AdminBook" asp-action="AddToCart" asp-route-id="@book.Id">Add to cart</a>
+                          <a asp-controller="AdminBook" asp-action="AddToCart" class="btn btn-danger" asp-route-id="@book.Id">Add to cart</a>
                     </td>
                   </tr>
         }

@@ -13,12 +13,12 @@ namespace _1670_Book.Controllers
     public class AdminBookController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment env;
+        
 
-        public AdminBookController(ApplicationDbContext context, IWebHostEnvironment env)
+        public AdminBookController(ApplicationDbContext context) 
         {
             _context = context;
-            this.env = env;
+            
         }
 
         public async Task<IActionResult> Index()
@@ -58,7 +58,7 @@ namespace _1670_Book.Controllers
             var book = _context.Book.Find(id);
             return book;
         }
-
+        
         List<Cart> GetCartItems()
         {
             var session = HttpContext.Session;
@@ -78,7 +78,7 @@ namespace _1670_Book.Controllers
         public IActionResult AddToCart(int id)
         {
             var cart = HttpContext.Session.GetString("cart");
-            if (cart == null) //If cart is empty
+            if (cart == null) 
             {
                 var book = GetBookDetail(id);
                 List<Cart> ListCart = new()
@@ -91,7 +91,7 @@ namespace _1670_Book.Controllers
         };
                 HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(ListCart));
             }
-            else //if cart has at least 1 product
+            else 
             {
                 List<Cart> CartData = JsonConvert.DeserializeObject<List<Cart>>(cart);
                 bool check = true;
@@ -159,21 +159,14 @@ namespace _1670_Book.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
         public string GetUserId()
         {
             return User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
         public double GetTotal()
-        {
-            // Replace this with your actual logic to calculate the total from the shopping cart
-            // For example, if you store the cart in session, you might iterate through the items and sum the totals
+        {          
             double total = 0;
-
-            // Example: Retrieve cart items from session
-            var cart = HttpContext.Session.Get<List<Cart>>("cart");
-            // HttpContext.Session.SetString(CARTKEY, JsonConvert.SerializeObject(CartData));
+            var cart = HttpContext.Session.Get<List<Cart>>("cart");          
 
             if (cart != null)
             {
@@ -182,13 +175,11 @@ namespace _1670_Book.Controllers
                     total += item.Book.Price * item.Quantity;
                 }
             }
-
             return total;
         }
 
         public IActionResult CreateOrder()
-        {
-            //ClaimsPrincipal currentUser = this.User;
+        {          
             string currentUserID = GetUserId();
             double currentTotal = GetTotal();
 
@@ -199,14 +190,11 @@ namespace _1670_Book.Controllers
                 order.OrderTime = DateTime.Now;
                 order.Total = currentTotal;
                 _context.Add(order);
-                _context.SaveChanges();
-                TempData["OrderId"] = order.Id;
-                // Clear the cart after creating the order
+                _context.SaveChanges();                
                 HttpContext.Session.Remove("cart");
             }
             return RedirectToAction("Index", "Order");
         }
-
 
     }
 }

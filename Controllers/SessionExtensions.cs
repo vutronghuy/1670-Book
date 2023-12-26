@@ -12,7 +12,7 @@ namespace _1670_Book.Controllers
 
         public static void Set<T>(this ISession session, string key, T value)
         {
-            var data = JsonSerializer.Serialize(value);
+            var data = JsonSerializer.Serialize(value); 
             session.SetString(key, data);
         }
     }

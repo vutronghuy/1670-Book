@@ -21,15 +21,13 @@ namespace _1670_Book.Controllers
             _context = context;
             this.env = env;
         }
-
-        // GET: Books
+       
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Book.Include(b => b.Category);
             return View(await applicationDbContext.ToListAsync());
         }
-
-        // GET: Books/Details/5
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Book == null)
@@ -47,17 +45,13 @@ namespace _1670_Book.Controllers
 
             return View(book);
         }
-        [Authorize(Roles = "Admin")]
-        // GET: Books/Create
+        [Authorize(Roles = "Admin")]       
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Category, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
-
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -65,8 +59,7 @@ namespace _1670_Book.Controllers
         public async Task<IActionResult> Create(Book book)
         {
             if (ModelState.IsValid)
-            {
-                //Upload file
+            {               
                 string fileName = UploadFile(book);
                 book.BookUrl = fileName;
 
@@ -93,8 +86,7 @@ namespace _1670_Book.Controllers
             }
             return null;
         }
-        [Authorize(Roles = "Admin")]
-        // GET: Books/Edit/5
+        [Authorize(Roles = "Admin")]       
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Book == null)
@@ -110,10 +102,7 @@ namespace _1670_Book.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", book.CategoryId);
             return View(book);
         }
-
-        // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -134,23 +123,20 @@ namespace _1670_Book.Controllers
                     {
                         return NotFound();
                     }
-
-                    // Update non-file properties
+                  
                     existingBook.NameBook = bookModel.NameBook;
                     existingBook.CategoryId = bookModel.CategoryId;
                     existingBook.Price = bookModel.Price;
                     existingBook.Quantity = bookModel.Quantity;
-
-                    // Check if a new image is provided
+                    
                     if (bookModel.BookImage != null)
                     {
-                        // Delete the existing image file
+                        
                         if (!string.IsNullOrEmpty(existingBook.BookUrl))
                         {
                             DeleteImage(existingBook.BookUrl);
                         }
-
-                        // Upload the new image
+                       
                         existingBook.BookUrl = UploadFile(bookModel);
                     }
 
@@ -171,7 +157,7 @@ namespace _1670_Book.Controllers
                     }
                 }
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", bookModel.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", bookModel.CategoryId);        
             return View(bookModel);
         }
         private void DeleteImage(string fileName)
